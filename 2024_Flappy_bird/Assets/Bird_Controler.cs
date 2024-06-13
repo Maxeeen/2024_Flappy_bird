@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,8 @@ public class Bird_Controler : MonoBehaviour
     public float JumpForce;
     public Rigidbody2D Rb2D;
     public GameObject GameOverScreen;
+    public TextMeshProUGUI PointsTextField;
+    public TextMeshProUGUI HighscorePointsTextField;
     public Animator Anim;
 
     public static bool HasStarted;
@@ -33,6 +36,7 @@ public class Bird_Controler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PointsTextField.text = Points.ToString();
         if (GameOver) return;
 
         if (Input.GetButtonDown("Jump"))
@@ -52,6 +56,15 @@ public class Bird_Controler : MonoBehaviour
     {
         GameOver = true;
         GameOverScreen.SetActive(true);
+
+        var highscore = PlayerPrefs.GetInt("Highscore");
+
+            if(highscore < Points)
+            {
+            highscore = Points;
+            PlayerPrefs.SetInt("Highscore", Points);
+            }
+            HighscorePointsTextField.text = highscore.ToString();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
